@@ -25,7 +25,11 @@ gem 'spring',        group: :development
 # Use puma as the app server
 gem 'puma'
 
+# Use figaro to securely configure the app
 gem "figaro"
+
+# Use versionist to support multiple versions for the API
+gem 'versionist'
 
 
 

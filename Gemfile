@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.11'
 # Use sqlite3 as the database for Active Record
+gem 'sqlite3'
 gem 'mysql2', '~> 0.3.18'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
@@ -24,5 +25,8 @@ gem 'spring',        group: :development
 
 # Use puma as the app server
 gem 'puma'
+
+gem "figaro"
+
 
 

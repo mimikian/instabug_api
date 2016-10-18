@@ -11,6 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20161018205855) do
+
+  create_table "bugs", force: true do |t|
+    t.string   "application_token", null: false
+    t.integer  "number",            null: false
+    t.integer  "status",            null: false
+    t.integer  "priority",          null: false
+    t.text     "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "bugs", ["application_token", "number"], name: "index_bugs_on_application_token_and_number", unique: true, using: :btree
+
+  create_table "states", force: true do |t|
+    t.string   "device"
+    t.string   "os"
+    t.integer  "memory"
+    t.integer  "storage"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

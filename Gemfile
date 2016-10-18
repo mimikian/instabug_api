@@ -31,5 +31,14 @@ gem "figaro"
 # Use versionist to support multiple versions for the API
 gem 'versionist'
 
+group :test do
+  gem "rspec-rails"
+  gem "factory_girl_rails"
+  gem 'ffaker'
+  gem 'guard-rspec'
+  gem 'selenium-webdriver', '~> 2.53.1'
+  gem 'database_cleaner'
+end
+
 
 

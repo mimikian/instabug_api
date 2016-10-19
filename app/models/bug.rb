@@ -5,6 +5,7 @@ class Bug < ActiveRecord::Base
   enum priority: %w(minor major critical)
 
   # Validations
+  validates :application_token, :number, :status, :priority, presence: true
   validates :number, uniqueness: { scope: :application_token, message: "should be unique with respect to the application" }
   validates :status, inclusion: { in: statuses.keys,  message: "%{value} is not a valid status" }
   validates :priority, inclusion: { in: priorities.keys,  message: "%{value} is not a valid priority" }

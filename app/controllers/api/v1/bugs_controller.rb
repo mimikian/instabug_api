@@ -3,12 +3,16 @@ class Api::V1::BugsController < ApplicationController
   respond_to :json
 
   def show
-    bug =  Bug.find(params[:id])
+    app_token = request.headers["Application-Token"]
+    number = params[:id]
+    bug =  Bug.find_by(application_token: app_token, number: number)
     render json: bug, include: :state
   end
 
   def create
+    app_token = request.headers["Application-Token"]
     bug = Bug.new(bug_params)
+    bug.application_token = app_token
     bug_save = bug.save
     if bug_save
       render json: bug, include: :state, status: 201, location: api_v1_bug_path(bug)
@@ -20,6 +24,6 @@ class Api::V1::BugsController < ApplicationController
   private
 
   def bug_params
-    params.require(:bug).permit(:application_token, :number, :status, :priority, :comment, state_attributes: [:device, :os, :memory, :storage])
+    params.require(:bug).permit(:number, :status, :priority, :comment, state_attributes: [:device, :os, :memory, :storage])
   end
 end

@@ -22,7 +22,7 @@ RSpec.describe Bug, type: :model do
   # end
 
   it { should validate_presence_of(:application_token) }
-  it { should validate_presence_of(:number) }
+  # it { should validate_presence_of(:number) }
   it { should validate_presence_of(:status) }
   it { should validate_presence_of(:priority) }
   it { should allow_value('recent').for(:status) }

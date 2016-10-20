@@ -1,5 +1,8 @@
 class State < ActiveRecord::Base
 
+  # Relations
+  belongs_to :bug
+
   # Constants
   MAX = 4294967295
 

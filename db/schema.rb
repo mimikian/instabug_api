@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20161018205855) do
   add_index "bugs", ["application_token", "number"], name: "index_bugs_on_application_token_and_number", unique: true, using: :btree
 
   create_table "states", force: true do |t|
+    t.integer  "bug_id",     null: false
     t.string   "device"
     t.string   "os"
     t.integer  "memory"

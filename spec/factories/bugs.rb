@@ -4,5 +4,6 @@ FactoryGirl.define do
     status "In-progress"
     priority "major"
     comment "This is a test comment"    
+    number 1
   end
 end

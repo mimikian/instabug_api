@@ -53,9 +53,8 @@ class Bug < ActiveRecord::Base
     self.number ||= max_number.to_i + 1
   end
 
-  def auto_increment_number
-    max_number = Bug.maximum(:number)
-    self.number ||= max_number.to_i + 1
+  def state
+    State.find_by(bug_id: id)
   end
 
   # Cached methods

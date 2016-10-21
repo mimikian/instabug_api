@@ -2,17 +2,20 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe Api::V1::BugsController do
-  before(:each) { request.headers['Accept'] = "v1" }
+  before(:each) do 
+    request.headers['Accept'] = "v1"
+  end
 
   describe "GET #show" do
     before(:each) do
       @bug = FactoryGirl.create :bug
-      get :show, id: @bug.id, format: :json
+      request.headers["Application-Token"] = "LeNU-ImvJLOLCxu5cwrrFg"
+      get :show, id: @bug.number, format: :json
     end
 
     # it "returns the information about a reporter on a hash" do
     #   bug_response = JSON.parse(response.body, symbolize_names: true)
-    #   expect(bug_response[:email]).to eql @bug.email
+    #   expect(bug_response[:number]).to eql @bug.number
     # end
 
     it { should respond_with 200 }
@@ -23,20 +26,23 @@ describe Api::V1::BugsController do
     context "when is successfully created" do
       before(:each) do
         @bug_attributes = FactoryGirl.attributes_for :bug
-        post :create, { bug: @bug_attributes }, format: :json
+        request.headers["Application-Token"] = "LeNU-ImvJLOLCxu5cwrrFg"
+        request.headers["Content-Type"] = "application/json"
+        post :create, { bug: @bug_attributes }
       end
 
       it "renders the json representation for the bug record just created" do
+        sleep 5.seconds
         bug_response = JSON.parse(response.body, symbolize_names: true)
         expect(bug_response[:number]).to eql @bug_attributes[:number]
       end
-
       it { should respond_with 201 }
     end
 
     context "when is not created" do
       before(:each) do
         @invalid_bug_attributes = {application_token: "", status: "", priority: ""}
+        request.headers["Content-Type"] = "application/json"
         post :create, { bug: @invalid_bug_attributes },
           format: :json
       end

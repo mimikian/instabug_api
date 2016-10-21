@@ -1,7 +1,7 @@
 collection @bugs
 attributes :number, :status, :priority, :comment
 @bugs.each do |bug|
-  child ((State.find_by(bug_id: bug.id))) {
+  child (bug.state) {
     attributes :os, :device, :memory, :storage
   }
 end

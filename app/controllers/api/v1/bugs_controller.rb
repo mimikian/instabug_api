@@ -7,24 +7,25 @@ class Api::V1::BugsController < ApplicationController
 
   def index
     @bugs = Bug.search(params, @app_token)
-    # render json: bugs, include: :state
   end
 
   def show
-    @state = State.find_by(bug_id: @bug.id)
-    # render json: @bug, include: :state
+    @state = @bug.state
   end
 
   def create
-    bug = Bug.new(bug_params)
-    bug.application_token = @app_token
-    bug.auto_increment_number
-    if bug.valid?
+    params = bug_params
+    @bug = Bug.new(params)
+    @bug.application_token = @app_token
+    @bug.auto_increment_number
+    if @bug.valid?
+      params[:number] = @bug.number
+      params[:application_token] = @app_token
       # Insert to a RabbitMQ worker
-      Publisher.publish("bugs", bug.attributes)
-      render json: bug, include: :state, status: 201
+      Publisher.publish("bugs", params)
+      render 'create', status: 201
     else
-      render json: { errors: bug.errors }, status: 422
+      render json: { errors: @bug.errors }, status: 422
     end
   end
 

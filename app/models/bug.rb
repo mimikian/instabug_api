@@ -1,5 +1,9 @@
 class Bug < ActiveRecord::Base
 
+  # Modules
+  include Tire::Model::Search
+  include Tire::Model::Callbacks
+
   # Relations
   has_one :state, dependent: :destroy
   accepts_nested_attributes_for :state
@@ -17,8 +21,14 @@ class Bug < ActiveRecord::Base
   # Callbacks
   before_save :comment_default_value, :auto_increment_number
 
-  # Instance Methods
+  # Class methods 
+  def self.search(params, app_token)
+    tire.search(load: true, page: params[:page], per_page: 15) do
+      query { string params[:query],  default_operator: "AND" } if params[:query].present?
+    end
+  end
 
+  # Instance Methods
   # Set default value for comment
   def comment_default_value
     self.comment ||= ""

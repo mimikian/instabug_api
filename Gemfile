@@ -31,6 +31,12 @@ gem "figaro"
 # Use versionist to support multiple versions for the API
 gem 'versionist'
 
+# Use Tire for elsatic search
+gem 'tire'
+
+# Use will_paginate
+gem 'will_paginate'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

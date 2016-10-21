@@ -37,6 +37,9 @@ gem 'tire'
 # Use will_paginate
 gem 'will_paginate'
 
+# Use dalli for memacached
+gem 'dalli'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

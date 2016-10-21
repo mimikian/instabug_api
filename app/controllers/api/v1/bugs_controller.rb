@@ -26,7 +26,7 @@ class Api::V1::BugsController < ApplicationController
   end
 
   def count
-    count = Bug.where(application_token: @app_token).count
+    count = Bug.cached_count(@app_token)
     render json: { count: count }
   end
 

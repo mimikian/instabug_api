@@ -20,6 +20,8 @@ class Bug < ActiveRecord::Base
 
   # Callbacks
   before_save :comment_default_value, :auto_increment_number
+  after_commit :flush_cache
+  after_create :flush_count_cache
 
   # Class methods
   def self.search(params, app_token)
@@ -32,6 +34,10 @@ class Bug < ActiveRecord::Base
     end
   end
 
+  def self.cached_count(app_token)
+    Rails.cache.fetch([self.name, app_token ,"count"]) { Bug.where(application_token: app_token).size}
+  end
+
   # Instance Methods
   # Set default value for a comment
   def comment_default_value
@@ -41,6 +47,14 @@ class Bug < ActiveRecord::Base
   def auto_increment_number
     max_number = Bug.maximum(:number)
     self.number ||= max_number.to_i + 1
+  end
+
+  def flush_cache
+    Rails.cache.delete([self.class.name, id])
+  end
+
+  def flush_count_cache
+    Rails.cache.delete([self.class.name, application_token ,"count"])
   end
 
 end

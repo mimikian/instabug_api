@@ -6,12 +6,13 @@ class Api::V1::BugsController < ApplicationController
   respond_to :json
 
   def index
-    bugs = Bug.search(params, @app_token)
-    render json: bugs, include: :state
+    @bugs = Bug.search(params, @app_token)
+    # render json: bugs, include: :state
   end
 
   def show
-    render json: @bug, include: :state
+    @state = State.find_by(bug_id: @bug.id)
+    # render json: @bug, include: :state
   end
 
   def create

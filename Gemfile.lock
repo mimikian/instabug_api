@@ -40,8 +40,6 @@ GEM
     bunny (2.6.0)
       amq-protocol (>= 2.0.1)
     byebug (8.2.5)
-    childprocess (0.5.9)
-      ffi (~> 1.0, >= 1.0.11)
     coderay (1.1.1)
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
@@ -104,11 +102,14 @@ GEM
     notiffany (0.1.0)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oj (2.17.5)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
     puma (3.6.0)
+    rabl (0.13.0)
+      activesupport (>= 2.3.14)
     rack (1.5.5)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -156,7 +157,6 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rubyzip (1.2.0)
     sass (3.2.19)
     sass-rails (4.0.5)
       railties (>= 4.0.0, < 5.0)
@@ -166,10 +166,6 @@ GEM
     sdoc (0.4.2)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
-    selenium-webdriver (2.53.1)
-      childprocess (~> 0.5)
-      rubyzip (~> 1.0)
-      websocket (~> 1.0)
     serverengine (2.0.1)
       sigdump (~> 0.2.2)
     shellany (0.0.1)
@@ -212,7 +208,6 @@ GEM
       activesupport (>= 3)
       railties (>= 3)
       yard (~> 0.7)
-    websocket (1.2.3)
     will_paginate (3.1.0)
     yard (0.9.5)
 
@@ -232,12 +227,13 @@ DEPENDENCIES
   guard-rspec
   jquery-rails
   mysql2 (~> 0.3.18)
+  oj
   puma
+  rabl
   rails (= 4.1.11)
   rspec-rails
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
-  selenium-webdriver (~> 2.53.1)
   shoulda-matchers (~> 3.1)
   sneakers
   spring

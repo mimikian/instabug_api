@@ -10,43 +10,32 @@ gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer',  platforms: :ruby
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
-
-# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring',        group: :development
-
 # Use puma as the app server
 gem 'puma'
-
-# Use figaro to securely configure the app
+# figaro to securely configure the app
 gem "figaro"
-
-# Use versionist to support multiple versions for the API
+# versionist to support multiple versions for the API
 gem 'versionist'
-
-# Use Tire for elsatic search
+# Tire for elsaticsearch
 gem 'tire'
-
-# Use will_paginate
+# will_paginate
 gem 'will_paginate'
-
-# Use dalli for memacached
+# dalli for memacached
 gem 'dalli'
-
-# Use bunny for rabbitmq - publisher
+# bunny for rabbitmq - publisher
 gem "bunny", ">= 2.6.0"
-
-# Use sneakers for rabbitmq - worker
+# sneakers for rabbitmq - worker
 gem 'sneakers'
+# RABL for generating JSON
+gem 'rabl'
+gem 'oj'
 
 group :development do
+  gem 'spring'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'byebug'
@@ -57,9 +46,5 @@ group :test do
   gem "factory_girl_rails"
   gem 'shoulda-matchers', '~> 3.1'
   gem 'guard-rspec'
-  gem 'selenium-webdriver', '~> 2.53.1'
   gem 'database_cleaner'
 end
-
-
-

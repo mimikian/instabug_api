@@ -1,6 +1,7 @@
 class Api::V1::BugsController < ApplicationController
 
-  before_action :extract_app_token, :bug_exist, only: :show
+  before_action :bug_exist, only: :show
+  before_action :extract_app_token
   skip_before_action :verify_authenticity_token
   respond_to :json
 
@@ -10,7 +11,7 @@ class Api::V1::BugsController < ApplicationController
   end
 
   def show
-    render json: bug, include: :state
+    render json: @bug, include: :state
   end
 
   def create
@@ -22,6 +23,11 @@ class Api::V1::BugsController < ApplicationController
     else
       render json: { errors: bug.errors }, status: 422
     end
+  end
+
+  def count
+    count = Bug.where(application_token: @app_token).count
+    render json: { count: count }
   end
 
   private

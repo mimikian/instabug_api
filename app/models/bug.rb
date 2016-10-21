@@ -21,15 +21,19 @@ class Bug < ActiveRecord::Base
   # Callbacks
   before_save :comment_default_value, :auto_increment_number
 
-  # Class methods 
+  # Class methods
   def self.search(params, app_token)
     tire.search(load: true, page: params[:page], per_page: 15) do
       query { string params[:query],  default_operator: "AND" } if params[:query].present?
+      filter :term, application_token: app_token
+      filter :term, :status => params[:status] unless params[:status].blank?
+      filter :term, :priority => params[:priority] unless params[:priority].blank?
+      filter :terms, :comment => params[:comment] unless params[:comment].blank?
     end
   end
 
   # Instance Methods
-  # Set default value for comment
+  # Set default value for a comment
   def comment_default_value
     self.comment ||= ""
   end

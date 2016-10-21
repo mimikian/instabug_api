@@ -38,6 +38,10 @@ class Bug < ActiveRecord::Base
     Rails.cache.fetch([self.name, app_token ,"count"]) { Bug.where(application_token: app_token).size}
   end
 
+  def self.cached_vesrion(app_token, number)
+    Rails.cache.fetch([self.name, app_token , number]) { Bug.find_by(application_token: app_token, number: number) }
+  end
+
   # Instance Methods
   # Set default value for a comment
   def comment_default_value
@@ -49,6 +53,12 @@ class Bug < ActiveRecord::Base
     self.number ||= max_number.to_i + 1
   end
 
+  def auto_increment_number
+    max_number = Bug.maximum(:number)
+    self.number ||= max_number.to_i + 1
+  end
+
+  # Cached methods
   def flush_cache
     Rails.cache.delete([self.class.name, id])
   end

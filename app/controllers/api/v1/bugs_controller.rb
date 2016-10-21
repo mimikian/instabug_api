@@ -1,7 +1,7 @@
 class Api::V1::BugsController < ApplicationController
 
-  before_action :bug_exist, only: :show
   before_action :extract_app_token
+  before_action :bug_exist, only: :show
   skip_before_action :verify_authenticity_token
   respond_to :json
 
@@ -17,9 +17,11 @@ class Api::V1::BugsController < ApplicationController
   def create
     bug = Bug.new(bug_params)
     bug.application_token = @app_token
-    bug_save = bug.save
-    if bug_save
-      render json: bug, include: :state, status: 201, location: api_v1_bug_path(bug)
+    bug.auto_increment_number
+    if bug.valid?
+      # Insert to a RabbitMQ worker
+      Publisher.publish("bugs", bug.attributes)
+      render json: bug, include: :state, status: 201
     else
       render json: { errors: bug.errors }, status: 422
     end
@@ -42,7 +44,7 @@ class Api::V1::BugsController < ApplicationController
 
   def bug_exist
     number = params[:id]
-    @bug = Bug.find_by(application_token: @app_token, number: number)
+    @bug = Bug.cached_vesrion(@app_token, number)
     if @bug.nil?
       render json: { errors: "404 Not found" }, status: 404
     end

@@ -3,4 +3,7 @@
 
 require File.expand_path('../config/application', __FILE__)
 
+# load sneakers task
+require 'sneakers/tasks'
+
 Rails.application.load_tasks

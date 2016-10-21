@@ -40,6 +40,12 @@ gem 'will_paginate'
 # Use dalli for memacached
 gem 'dalli'
 
+# Use bunny for rabbitmq - publisher
+gem "bunny", ">= 2.6.0"
+
+# Use sneakers for rabbitmq - worker
+gem 'sneakers'
+
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'

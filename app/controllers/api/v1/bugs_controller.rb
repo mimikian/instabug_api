@@ -5,14 +5,17 @@ class Api::V1::BugsController < ApplicationController
   skip_before_action :verify_authenticity_token
   respond_to :json
 
+  api :GET, "/bugs", "Get the bugs related to a specific application"
   def index
     @bugs = Bug.search(params, @app_token)
   end
 
+  api :GET, "/users/:id", "Get a bug using it's number and the application token is stored as a header 'Application-Token'"
   def show
     @state = @bug.state
   end
 
+  api :POST, "/bugs", "Create a bug"
   def create
     params = bug_params
     @bug = Bug.new(params)
@@ -29,6 +32,7 @@ class Api::V1::BugsController < ApplicationController
     end
   end
 
+  api :GET, "/bugs", "Get the count of bugs related to a specific application"
   def count
     count = Bug.cached_count(@app_token)
     render json: { count: count }

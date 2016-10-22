@@ -33,6 +33,7 @@ gem 'sneakers'
 # RABL for generating JSON
 gem 'rabl'
 gem 'oj'
+gem 'apipie-rails'
 
 group :development do
   gem 'spring'

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  apipie
   root 'site#index'
 
   # API routes

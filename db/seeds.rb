@@ -1,7 +1,14 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+# Bugs 
+Bug.create(application_token: 'b78f8f2319c2b95d79954', number: '1', status: 'closed', priority: 'minor', comment: 'this is a comment' )
+Bug.create(application_token: 'b78f8f2319c2b95d79954', number: '1', status: 'In-progress', priority: 'major', comment: 'this is a comment' )
+
+Bug.create(application_token: 'aaaaaaaaaaaaaaaaaaaa', number: '1', status: 'closed', priority: 'minor', comment: 'this is a comment' )
+Bug.create(application_token: 'aaaaaaaaaaaaaaaaaaaa', number: '1', status: 'In-progress', priority: 'major', comment: 'this is a comment' )
+
+# State
+State.create(bug_id: 1, device: 'device type 1', os: 'mac', memory: 1024, storage: 10)
+State.create(bug_id: 2, device: 'device type 2', os: 'mac', memory: 1024, storage: 10)
+State.create(bug_id: 3, device: 'device type 3', os: 'mac', memory: 1024, storage: 10)
+State.create(bug_id: 4, device: 'device type 4', os: 'mac', memory: 1024, storage: 10)
+
+

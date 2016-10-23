@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   
-  apipie
-  root 'site#index'
+  # apipie
+root 'apipie/apipies#index'
 
   # API routes
   namespace :api, defaults: { format: :json } do

@@ -8,15 +8,15 @@ class Bug < ActiveRecord::Base
   has_one :state, dependent: :destroy
   accepts_nested_attributes_for :state
 
-  # Enums
-  enum status: %w(recent In-progress closed)
+  # enums
   enum priority: %w(minor major critical)
 
   # Validations
+  validate :accepted_status, on: :create
   validates :application_token, :status, :priority, presence: true
   validates :number, uniqueness: { scope: :application_token, message: "should be unique with respect to the application" }
-  validates :status, inclusion: { in: statuses.keys,  message: "%{value} is not a valid status" }
   validates :priority, inclusion: { in: priorities.keys,  message: "%{value} is not a valid priority" }
+
 
   # Callbacks
   before_save :comment_default_value, :auto_increment_number
@@ -42,6 +42,10 @@ class Bug < ActiveRecord::Base
     Rails.cache.fetch([self.name, app_token , number]) { Bug.find_by(application_token: app_token, number: number) }
   end
 
+  def self.get_map_status_value(key)
+    mapped_to = STATUS_VALUES[key]
+  end
+
   # Instance Methods
   # Set default value for a comment
   def comment_default_value
@@ -53,8 +57,17 @@ class Bug < ActiveRecord::Base
     self.number ||= max_number.to_i + 1
   end
 
+  def status_mapped_value
+    STATUS_KEYS[status]
+  end
+
   def state
     State.find_by(bug_id: id)
+  end
+
+  # Validation methods
+  def accepted_status
+    errors.add(:status, "invalid status") if status.nil?
   end
 
   # Cached methods
@@ -66,4 +79,7 @@ class Bug < ActiveRecord::Base
     Rails.cache.delete([self.class.name, application_token ,"count"])
   end
 
+  # Constants
+  STATUS_VALUES = {'new' => 0, 'In-progress' =>  1, 'closed' => 2 }
+  STATUS_KEYS = {0 => 'new', 1 => 'In-progress', 2 => 'closed' }
 end

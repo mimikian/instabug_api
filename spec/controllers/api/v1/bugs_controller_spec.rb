@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe Api::V1::BugsController do
-  before(:each) do 
+  before(:each) do
     request.headers['Accept'] = "v1"
   end
 
@@ -12,11 +12,6 @@ describe Api::V1::BugsController do
       request.headers["Application-Token"] = "LeNU-ImvJLOLCxu5cwrrFg"
       get :show, id: @bug.number, format: :json
     end
-
-    # it "returns the information about a reporter on a hash" do
-    #   bug_response = JSON.parse(response.body, symbolize_names: true)
-    #   expect(bug_response[:number]).to eql @bug.number
-    # end
 
     it { should respond_with 200 }
   end
@@ -32,7 +27,7 @@ describe Api::V1::BugsController do
       end
 
       it "renders the json representation for the bug record just created" do
-        sleep 5.seconds
+        sleep 1.seconds
         bug_response = JSON.parse(response.body, symbolize_names: true)
         expect(bug_response[:number]).to eql @bug_attributes[:number]
       end
@@ -54,12 +49,8 @@ describe Api::V1::BugsController do
 
       it "renders the json errors on why the bug could not be created" do
         bug_response = JSON.parse(response.body, symbolize_names: true)
-        expect(bug_response[:errors][:application_token]).to include "can't be blank"
-        expect(bug_response[:errors][:status]).to include "can't be blank"
-        expect(bug_response[:errors][:priority]).to include "can't be blank"
+        expect(bug_response[:errors]).to include "Invalid application token"
       end
-
-      it { should respond_with 422 }
     end
   end
 

@@ -25,13 +25,13 @@ class Api::V1::BugsController < ApplicationController
       params[:application_token] = @app_token
       # Insert to a RabbitMQ worker
       Publisher.publish("bugs", params)
-      render 'create', status: 201
+      render json: { number: @bug.number }, status: 201
     else
       render json: { errors: @bug.errors }, status: 422
     end
   end
 
-  api :GET, "/bugs", "Get the count of bugs related to a specific application Example: curl -H \"Application-Token:b78f8f2319c2b95d79954\" #{ENV['SERVER_IP']}/api/bugs/count"
+  api :GET, "/bugs", "Get the count of bugs related to a specific application, Example: curl -H \"Application-Token:b78f8f2319c2b95d79954\" #{ENV['SERVER_IP']}/api/bugs/count"
   def count
     count = Bug.cached_count(@app_token)
     render json: { count: count }

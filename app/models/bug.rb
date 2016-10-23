@@ -14,9 +14,8 @@ class Bug < ActiveRecord::Base
   # Validations
   validate :accepted_status, on: :create
   validates :application_token, :status, :priority, presence: true
-  validates :number, uniqueness: { scope: :application_token, message: "should be unique with respect to the application" }
+  validates :number, uniqueness: { scope: :application_token, message: "should be unique within the same application" }
   validates :priority, inclusion: { in: priorities.keys,  message: "%{value} is not a valid priority" }
-
 
   # Callbacks
   before_save :comment_default_value, :auto_increment_number
@@ -47,14 +46,31 @@ class Bug < ActiveRecord::Base
   end
 
   # Instance Methods
-  # Set default value for a comment
   def comment_default_value
     self.comment ||= ""
   end
 
   def auto_increment_number
-    max_number = Bug.maximum(:number)
-    self.number ||= max_number.to_i + 1
+    max_number = Rails.cache.read(application_token)
+    if max_number.nil?
+      max_number = Bug.where(application_token: application_token).maximum(:number) + 1 unless max_number.nil?
+      max_number = 1 if max_number.nil?
+    else
+      max_number = max_number + 1
+    end
+    Rails.cache.write(application_token, max_number)
+    self.number ||= max_number
+
+    # If the cache is not persistant and is deleted once the server is down, we could use a kinda slower technique but guarantee consistany of the bug numbers in one application
+    # tracker = HashWithIndifferentAccess.new(YAML.load(File.read(File.expand_path('../concerns/application_number_tracker.yml', __FILE__)))   )
+    # if !tracker[application_token]#.nil?
+    #   tracker[application_token] = 1
+    # else
+    #   puts tracker[application_token]
+    #   last_count = tracker[application_token].to_i
+    #   tracker[application_token] = last_count + 1
+    # end
+    # File.open('app/models/concerns/application_number_tracker.yml', 'w') {|f| f.write tracker.to_yaml }
   end
 
   def status_mapped_value
